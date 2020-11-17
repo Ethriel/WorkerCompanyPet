@@ -3,7 +3,7 @@ go
 create trigger onInsertOrUpdateWorker
 on [Worker]
 after
-update
+update, insert
 as
 begin
 set nocount on;

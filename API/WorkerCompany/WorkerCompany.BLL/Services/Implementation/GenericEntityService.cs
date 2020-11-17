@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WorkerCompany.BLL.Helpers;
 using WorkerCompany.BLL.Services.Abstraction;
+using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.BLL.Services.Implementation
 {
@@ -11,10 +14,15 @@ namespace WorkerCompany.BLL.Services.Implementation
         private readonly DbContext context;
         private readonly DbSet<T> set;
 
-        public GenericEntityService(DbContext context)
+        public GenericEntityService(WorkerCompanyPetContext context)
         {
             this.context = context;
             set = context.Set<T>();
+        }
+
+        public void Add(T entity)
+        {
+            set.Add(entity);
         }
 
         public async Task<int> CommitChangesAsync()
@@ -22,15 +30,24 @@ namespace WorkerCompany.BLL.Services.Implementation
             return await context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(object id)
+        public void Delete(T entity)
         {
-            var entity = await GetByIdAsync(id);
             set.Remove(entity);
         }
 
         public async Task<T> GetByIdAsync(object id)
         {
             return await set.FindAsync(id);
+        }
+
+        public IQueryable<T> GetEntitiesByCondition(Expression<Func<T, bool>> expression)
+        {
+            return set.Where(expression);
+        }
+
+        public async Task<T> GetEntityByConditionAsync(Expression<Func<T, bool>> expression)
+        {
+            return await set.FirstOrDefaultAsync(expression);
         }
 
         public IQueryable<T> ReadAll()

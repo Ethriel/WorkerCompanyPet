@@ -9,6 +9,7 @@ namespace WorkerCompany.BLL.Services.Abstraction
         where TModel: class
     {
         Task<ApiResponse> ReadAllAsync();
+        Task<ApiResponse> AddAsync(TModel model);
         Task<ApiResponse> GetByIdAsync(object id);
         Task<ApiResponse> DeleteAsync(object id);
         Task<ApiResponse> UpdateAsync(object id, TModel @new);

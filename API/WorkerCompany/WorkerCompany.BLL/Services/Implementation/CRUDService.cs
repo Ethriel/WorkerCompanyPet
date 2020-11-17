@@ -18,6 +18,16 @@ namespace WorkerCompany.BLL.Services.Implementation
             this.mapperService = mapperService;
         }
 
+        public async Task<ApiResponse> AddAsync(TModel model)
+        {
+            var entity = mapperService.MapEntity(model);
+            entityService.Add(entity);
+            await entityService.CommitChangesAsync();
+
+            var response = ApiResponse.GetOkResponse(message: "Item was added");
+            return response;
+        }
+
         public async Task<ApiResponse> DeleteAsync(object id)
         {
             var response = default(ApiResponse);
@@ -33,7 +43,7 @@ namespace WorkerCompany.BLL.Services.Implementation
             }
             else
             {
-                await entityService.DeleteAsync(entity);
+                entityService.Delete(entity);
                 await entityService.CommitChangesAsync();
                 response = ApiResponse.GetOkResponse(message: "entity was deleted");
             }
@@ -90,6 +100,7 @@ namespace WorkerCompany.BLL.Services.Implementation
             {
                 var entity = mapperService.MapEntity(@new);
                 old = entityService.UpdateAsync(old, entity);
+                await entityService.CommitChangesAsync();
                 var data = mapperService.MapModel(old);
 
                 response = ApiResponse.GetOkResponse("Item was updated", data);
