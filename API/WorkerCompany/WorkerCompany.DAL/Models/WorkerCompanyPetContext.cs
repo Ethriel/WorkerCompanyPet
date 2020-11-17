@@ -53,7 +53,7 @@ namespace WorkerCompany.DAL.Models
                       .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Company)
-                      .WithMany(p => p.Worker)
+                      .WithMany(p => p.Workers)
                       .HasForeignKey(d => d.CompanyId)
                       .HasConstraintName("FK__Worker__CompanyI__276EDEB3");
             });
