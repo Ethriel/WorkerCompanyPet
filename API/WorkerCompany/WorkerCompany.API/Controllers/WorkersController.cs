@@ -35,7 +35,7 @@ namespace WorkerCompany.API.Controllers
             return this.GetActionResult(apiResponse, logger);
         }
 
-        [HttpGet("delete/{id}")]
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             var apiResponse = await workers.DeleteAsync(id);
