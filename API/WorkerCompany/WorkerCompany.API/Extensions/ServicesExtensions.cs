@@ -27,6 +27,7 @@ namespace WorkerCompany.API.Extensions
 
         private static void AddCustomServices(IServiceCollection services)
         {
+            services.AddScoped(typeof(DbContext), typeof(WorkerCompanyPetContext));
             services.AddScoped(typeof(IServerService), typeof(ServerService));
             services.AddAutoMapper(AllMapperProfiles.Profiles);
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

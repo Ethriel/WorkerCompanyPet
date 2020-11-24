@@ -14,5 +14,6 @@ namespace WorkerCompany.DAL.Models
         public string Description { get; set; }
 
         public virtual ICollection<Worker> Workers { get; set; }
+        public virtual ICollection<WorkerCopy> WorkerCopies { get; set; }
     }
 }

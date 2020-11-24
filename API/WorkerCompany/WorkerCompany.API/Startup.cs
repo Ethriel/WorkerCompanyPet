@@ -74,6 +74,11 @@ namespace WorkerCompany.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute
+                (
+                    name: "default",
+                    pattern: ""
+                ); 
                 endpoints.MapControllers();
             });
 

@@ -2,7 +2,7 @@
 
 namespace WorkerCompany.DAL.Models
 {
-    public partial class Worker
+    public class WorkerCopy
     {
         public int Id { get; set; }
         public string Name { get; set; }

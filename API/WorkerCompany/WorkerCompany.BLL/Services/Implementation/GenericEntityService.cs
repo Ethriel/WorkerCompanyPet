@@ -14,7 +14,7 @@ namespace WorkerCompany.BLL.Services.Implementation
         private readonly DbContext context;
         private readonly DbSet<T> set;
 
-        public GenericEntityService(WorkerCompanyPetContext context)
+        public GenericEntityService(DbContext context)
         {
             this.context = context;
             set = context.Set<T>();
