@@ -54,20 +54,20 @@ namespace WorkerCompany.UnitTests.WorkerTests
             Assert.Equal(after.Name, newName);
         }
 
-        [Fact]
-        public async Task Delete()
-        {
-            var context = GetContext();
-            var service = GetService<Worker>();
+        //[Fact]
+        //public async Task Delete()
+        //{
+        //    var context = GetContext();
+        //    var service = GetService<Worker>();
 
-            var worker = await context.Worker.OrderBy(x => x.Id).LastOrDefaultAsync();
-            service.Delete(worker);
+        //    var worker = await context.Worker.OrderBy(x => x.Id).LastOrDefaultAsync();
+        //    service.Delete(worker);
 
-            var commited = await service.CommitChangesAsync();
+        //    var commited = await service.CommitChangesAsync();
 
-            var all = await service.ReadAll().ToArrayAsync();
-            Assert.DoesNotContain<Worker>(worker, all);
-        }
+        //    var all = await service.ReadAll().ToArrayAsync();
+        //    Assert.DoesNotContain<Worker>(worker, all);
+        //}
 
         private IGenericEntityService<T> GetService<T>() where T : class
         {
