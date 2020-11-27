@@ -6,18 +6,20 @@ using System;
 using WorkerCompany.BLL.Helpers;
 using WorkerCompany.BLL.Services.Abstraction;
 using WorkerCompany.BLL.Services.Implementation;
+using WorkerCompany.DAL.Helpers;
 using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.UnitTests.Helpers
 {
     public class TestServices
     {
-        public static IServiceProvider BuildServiceProvider(string dbName)
+        public static IServiceProvider BuildServiceProvider()
         {
             var services = new ServiceCollection();
             services.AddDbContext<WorkerCompanyPetContext>(options =>
                                                            options.UseLazyLoadingProxies()
-                                                                  .UseInMemoryDatabase(databaseName: dbName));
+                                                                  .UseSqlServer(ConnectionStrings.Default));
+            services.AddSingleton(typeof(DbContext), typeof(WorkerCompanyPetContext));
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddAutoMapper(AllMapperProfiles.Profiles);
             services.AddScoped(typeof(IGenericEntityService<>), typeof(GenericEntityService<>));
