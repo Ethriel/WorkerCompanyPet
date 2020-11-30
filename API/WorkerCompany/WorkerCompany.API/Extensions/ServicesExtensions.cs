@@ -25,10 +25,15 @@ namespace WorkerCompany.API.Extensions
                                                                   .UseSqlServer(configuration.GetConnectionString("Default")));
         }
 
+        private static void Addlogging(IServiceCollection services)
+        {
+            //services.AddSingleton<Serilog.Core.Logger>(container => new LoggerConfiguration());
+        }
+
         private static void AddCustomServices(IServiceCollection services)
         {
             services.AddScoped(typeof(DbContext), typeof(WorkerCompanyPetContext));
-            services.AddScoped(typeof(IServerService), typeof(ServerService));
+            //services.AddScoped(typeof(IServerService), typeof(ServerService));
             services.AddAutoMapper(AllMapperProfiles.Profiles);
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped(typeof(IGenericEntityService<>), typeof(GenericEntityService<>));

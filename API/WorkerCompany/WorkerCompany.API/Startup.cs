@@ -36,6 +36,8 @@ namespace WorkerCompany.API
 
             services.AddServices(Configuration);
 
+            
+
             services.AddSwaggerGen(swagger =>
             {
                 swagger.DescribeAllParametersInCamelCase();

@@ -41,7 +41,9 @@ namespace WorkerCompany.UnitTests.WorkerTests
         [Fact]
         public async Task Update()
         {
-            var newName = "Worker 1 renamed by test";
+            var random = new Random();
+            var number = random.Next(1, 20);
+            var newName = $"{number}. Worker was renamed by test";
             var id = 1;
 
             var service = GetService<Worker>();
