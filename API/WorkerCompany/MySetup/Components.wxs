@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+		<!--Product components-->
+		<ComponentGroup Id="ProductComponents">
+			<ComponentRef Id="MainAppShortcut"/>
+		</ComponentGroup>
+
+		<!--Installed files-->
+		<DirectoryRef Id="INSTALLFOLDER" FileSource="..\WorkerCompanyPet.API\bin\Debug\netcoreapp3.1\win-$(var.Platform)\publish">
+			<Component Id="MainAppShortcut" Guid="{6A399AE9-3F78-4EE7-A030-BBE5F2C0D362}">
+
+				<!--Shortcut to application-->
+				<Shortcut Id="MainAppShortcut"
+						  Name="!(loc.ProductName_$(var.Platform))"
+						  Target="[INSTALLFOLDER]WorkerCompany.API.exe"
+						  Directory="InstallProgramMenuFolder"
+						  WorkingDirectory="INSTALLFOLDER"
+						  />
+
+				<!--Unique key for this component/shortcuts-->
+				<RegistryValue Id="RegShortcutKey"
+							   Name="ShortcutWorkerCompany"
+							   Root="HKCU"
+							   Key="SOFTWARE\!(loc.ProductFolder)"
+							   Value="1"
+							   Type="integer"
+							   KeyPath="yes"
+							   />
+
+
+				<!--Remove start menu items-->
+				<RemoveFolder Id="InstallProgramMenuFolder" Directory="InstallProgramMenuFolder" On="uninstall"/>
+			</Component>
+		</DirectoryRef>
+
+
+
+	</Fragment>
+</Wix>
