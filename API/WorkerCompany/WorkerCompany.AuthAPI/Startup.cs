@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkerCompany.Authentication.AuthItems;
 
 namespace WorkerCompany.AuthAPI
 {
@@ -35,6 +36,10 @@ namespace WorkerCompany.AuthAPI
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
+
+            var authSeeder = new AuthSeeder(app.ApplicationServices);
+            authSeeder.CreateRoles().Wait();
+            authSeeder.CreateUsers().Wait();
         }
     }
 }

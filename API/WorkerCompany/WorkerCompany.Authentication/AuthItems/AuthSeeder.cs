@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.Models;
@@ -10,10 +12,23 @@ namespace WorkerCompany.Authentication.AuthItems
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<AppUser> userManager;
 
+        public AuthSeeder()
+        {
+
+        }
+
         public AuthSeeder(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+        }
+        public AuthSeeder(IServiceProvider services)
+        {
+            using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                this.roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                this.userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            }
         }
 
         public async Task CreateRoles()
