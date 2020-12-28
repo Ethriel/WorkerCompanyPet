@@ -10,7 +10,19 @@
         }
       ],
       "UpstreamPathTemplate": "/api/workers/all",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "FileChacheOptions": { "TtlSeconds": 30 }
     }
   ],
   "GlobalConfiguration": {
