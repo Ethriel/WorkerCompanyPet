@@ -20,7 +20,8 @@ namespace WorkerCompany.Gateway
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    //var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    var env = "dev";
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureAppConfiguration(config => config.AddJsonFile($"ocelot.{env}.json"));
                 })
