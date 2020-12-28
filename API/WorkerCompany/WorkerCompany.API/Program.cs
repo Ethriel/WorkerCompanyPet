@@ -27,9 +27,7 @@ namespace WorkerCompany.API
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile(
-                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
-                    optional: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
                 .Build();
 
             Log.Logger = new LoggerConfiguration()
@@ -76,9 +74,7 @@ namespace WorkerCompany.API
                        .ConfigureAppConfiguration(configuration =>
                        {
                            configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                           configuration.AddJsonFile(
-                           $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
-                           optional: true);
+                           configuration.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true);
                        })
                        .UseSerilog();
         }
