@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models;
 
 namespace WorkerCompany.Gateway
@@ -33,24 +34,10 @@ namespace WorkerCompany.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var secret = "ApiSecret";
-            var key = Encoding.ASCII.GetBytes(secret);
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+            var secret = Configuration["JwtSecret"];
+
+            services = ConfigureJwt.Configure(services, secret);
+
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
 
@@ -79,7 +66,7 @@ namespace WorkerCompany.Gateway
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Gateway works");
                 });
             });
 
