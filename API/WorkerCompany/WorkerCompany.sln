@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCompany.JWT", "Worker
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCompany.Authentication", "WorkerCompany.Authentication\WorkerCompany.Authentication.csproj", "{032DB2B8-F17E-444A-B5B5-2BA7184F1436}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCompany.AuthAPI", "WorkerCompany.AuthAPI\WorkerCompany.AuthAPI.csproj", "{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,18 @@ Global
 		{032DB2B8-F17E-444A-B5B5-2BA7184F1436}.Release|x64.Build.0 = Release|Any CPU
 		{032DB2B8-F17E-444A-B5B5-2BA7184F1436}.Release|x86.ActiveCfg = Release|Any CPU
 		{032DB2B8-F17E-444A-B5B5-2BA7184F1436}.Release|x86.Build.0 = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|x64.Build.0 = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1A77A65-9A3A-4472-8D7C-CBE2C6C849E7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
