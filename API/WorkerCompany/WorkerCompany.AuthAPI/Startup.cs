@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models;
+using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.AuthAPI
 {
@@ -32,10 +33,10 @@ namespace WorkerCompany.AuthAPI
             var secret = Configuration["JwtSecret"];
             services = ConfigureJwt.Configure(services, secret);
 
-            services.AddDbContext<AppIdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Auth")));
+            services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppIdentityContext>()
+                    .AddEntityFrameworkStores<WorkerCompanyPetContext>()
                     .AddRoles<IdentityRole>()
                     .AddDefaultTokenProviders();
         }
