@@ -12,7 +12,7 @@
       "UpstreamPathTemplate": "/workers",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
+        "AuthenticationProviderKey": "AuthAPI",
         "AllowedScopes": []
       },
       "RatelimitOptions": {
@@ -25,7 +25,7 @@
       "FileChacheOptions": { "TtlSeconds": 30 }
     },
     {
-      "DownstreamPathTemplate": "/api/Auth/SignIn",
+      "DownstreamPathTemplate": "/auth/sign-in",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -36,7 +36,7 @@
       "UpstreamPathTemplate": "/sign-in",
       "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
+        "AuthenticationProviderKey": "AuthAPI",
         "AllowedScopes": []
       },
       "RatelimitOptions": {

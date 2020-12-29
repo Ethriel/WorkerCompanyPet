@@ -13,7 +13,7 @@ using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.AuthAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthController : Controller
     {
@@ -30,6 +30,7 @@ namespace WorkerCompany.AuthAPI.Controllers
             this.signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
         {

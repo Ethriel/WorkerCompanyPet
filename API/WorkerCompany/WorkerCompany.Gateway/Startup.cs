@@ -34,21 +34,30 @@ namespace WorkerCompany.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            //services.AddIdentity<AppUser, IdentityRole>()
+            //        .AddEntityFrameworkStores<WorkerCompanyPetContext>()
+            //        .AddRoles<IdentityRole>()
+            //        .AddDefaultTokenProviders();
+
             var secret = Configuration["JwtSecret"];
             var issuer = Configuration["JwtIssuer"];
             var audience = Configuration["JwtAudience"];
 
-            services = ConfigureJwt.Configure(services, secret, issuer, audience);
+            //services = ConfigureJwt.Configure(services, secret, issuer, audience);
+            var authProviderKey = "AuthAPI";
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(authProviderKey, options =>
+                    {
+                        options.Authority = issuer;
+                        options.Audience = issuer;
+                    });
 
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
 
-            services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-
-            services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<WorkerCompanyPetContext>()
-                    .AddRoles<IdentityRole>()
-                    .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +70,9 @@ namespace WorkerCompany.Gateway
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication()
+               .UseOcelot()
+               .Wait();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -72,7 +83,7 @@ namespace WorkerCompany.Gateway
                 });
             });
 
-            app.UseOcelot().Wait();
+            //app.UseOcelot().Wait();
         }
     }
 }
