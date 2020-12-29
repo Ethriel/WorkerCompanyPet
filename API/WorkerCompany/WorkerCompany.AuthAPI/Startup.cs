@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
-using WorkerCompany.Authentication.Models;
 using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.AuthAPI

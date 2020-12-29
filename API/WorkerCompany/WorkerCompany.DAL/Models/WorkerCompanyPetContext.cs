@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WorkerCompany.Authentication.Models;
 using WorkerCompany.DAL.Helpers;
 
 namespace WorkerCompany.DAL.Models
@@ -60,6 +59,10 @@ namespace WorkerCompany.DAL.Models
                       .WithMany(p => p.Workers)
                       .HasForeignKey(d => d.CompanyId)
                       .HasConstraintName("FK__Worker__CompanyI__276EDEB3");
+
+                entity.HasOne(w => w.AppUser)
+                      .WithOne(au => au.Worker)
+                      .HasForeignKey<AppUser>(au => au.WorkerId);
             });
 
             modelBuilder.Entity<WorkerCopy>(entity =>
@@ -83,7 +86,8 @@ namespace WorkerCompany.DAL.Models
                       .HasConstraintName("FK__WorkerCop__Compa__5DCAEF64");
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
+            //OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

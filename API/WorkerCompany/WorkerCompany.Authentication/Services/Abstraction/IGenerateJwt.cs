@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using WorkerCompany.Authentication.Models;
+using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.Authentication.Services.Abstraction
 {

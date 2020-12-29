@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
-using WorkerCompany.Authentication.Models;
+using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.Gateway
 {
@@ -41,10 +41,10 @@ namespace WorkerCompany.Gateway
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
 
-            services.AddDbContext<AppIdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Auth")));
+            services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppIdentityContext>()
+                    .AddEntityFrameworkStores<WorkerCompanyPetContext>()
                     .AddRoles<IdentityRole>()
                     .AddDefaultTokenProviders();
         }

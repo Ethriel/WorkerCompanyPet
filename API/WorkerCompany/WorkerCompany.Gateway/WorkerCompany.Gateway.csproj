@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkerCompany.Authentication\WorkerCompany.Authentication.csproj" />
+    <ProjectReference Include="..\WorkerCompany.DAL\WorkerCompany.DAL.csproj" />
   </ItemGroup>
 
 </Project>

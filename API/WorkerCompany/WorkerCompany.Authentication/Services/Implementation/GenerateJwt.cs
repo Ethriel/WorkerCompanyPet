@@ -8,8 +8,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using WorkerCompany.Authentication.Models;
 using WorkerCompany.Authentication.Services.Abstraction;
+using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.Authentication.Services.Implementation
 {

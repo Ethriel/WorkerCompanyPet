@@ -22,8 +22,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WorkerCompany.Authentication\WorkerCompany.Authentication.csproj" />
-  </ItemGroup>
 
 </Project>
