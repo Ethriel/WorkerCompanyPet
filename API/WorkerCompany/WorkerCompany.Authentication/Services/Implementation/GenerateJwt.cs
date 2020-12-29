@@ -16,37 +16,48 @@ namespace WorkerCompany.Authentication.Services.Implementation
     public class GenerateJwt : IGenerateJwt
     {
         private readonly SymmetricSecurityKey key;
+        private readonly IConfiguration configuration;
         private readonly UserManager<AppUser> userManager;
         public GenerateJwt(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             var secretBytes = Encoding.ASCII.GetBytes(configuration["JwtSecret"]);
             key = new SymmetricSecurityKey(secretBytes);
+            this.configuration = configuration;
             this.userManager = userManager;
         }
         public async Task<string> CreateToken(AppUser user)
         {
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             var roles = await userManager.GetRolesAsync(user);
             var rolesClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
             claims.AddRange(rolesClaims);
 
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = credentials
-            };
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            var issuer = configuration["JwtIssuer"];
+
+            var audience = configuration["JwtAudience"];
+
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(claims),
+            //    Expires = DateTime.Now.AddDays(7),
+            //    SigningCredentials = credentials,
+            //    Issuer = issuer,
+            //    Audience = audience
+            //};
+
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var token = new JwtSecurityToken(issuer: issuer, audience: audience, claims: claims, expires: DateTime.Now.AddDays(7), signingCredentials: credentials);
+            var tokenString = tokenHandler.WriteToken(token);
+            return tokenString;
         }
     }
 }

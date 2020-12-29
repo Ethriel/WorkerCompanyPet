@@ -205,7 +205,7 @@ namespace WorkerCompany.DAL.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("WorkerId")
+                    b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -217,9 +217,6 @@ namespace WorkerCompany.DAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("WorkerId")
-                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -254,7 +251,7 @@ namespace WorkerCompany.DAL.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -274,6 +271,10 @@ namespace WorkerCompany.DAL.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.HasIndex("CompanyId");
 
@@ -362,23 +363,20 @@ namespace WorkerCompany.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkerCompany.DAL.Models.AppUser", b =>
-                {
-                    b.HasOne("WorkerCompany.DAL.Models.Worker", "Worker")
-                        .WithOne("AppUser")
-                        .HasForeignKey("WorkerCompany.DAL.Models.AppUser", "WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Worker");
-                });
-
             modelBuilder.Entity("WorkerCompany.DAL.Models.Worker", b =>
                 {
+                    b.HasOne("WorkerCompany.DAL.Models.AppUser", "AppUser")
+                        .WithOne("Worker")
+                        .HasForeignKey("WorkerCompany.DAL.Models.Worker", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("WorkerCompany.DAL.Models.Company", "Company")
                         .WithMany("Workers")
                         .HasForeignKey("CompanyId")
-                        .HasConstraintName("FK__Worker__CompanyI__276EDEB3");
+                        .HasConstraintName("FK__Worker__CompanyI__276EDEB3")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Company");
                 });
@@ -388,9 +386,15 @@ namespace WorkerCompany.DAL.Migrations
                     b.HasOne("WorkerCompany.DAL.Models.Company", "Company")
                         .WithMany("WorkerCopies")
                         .HasForeignKey("CompanyId")
-                        .HasConstraintName("FK__WorkerCop__Compa__5DCAEF64");
+                        .HasConstraintName("FK__WorkerCop__Compa__5DCAEF64")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("WorkerCompany.DAL.Models.AppUser", b =>
+                {
+                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("WorkerCompany.DAL.Models.Company", b =>
@@ -398,11 +402,6 @@ namespace WorkerCompany.DAL.Migrations
                     b.Navigation("WorkerCopies");
 
                     b.Navigation("Workers");
-                });
-
-            modelBuilder.Entity("WorkerCompany.DAL.Models.Worker", b =>
-                {
-                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

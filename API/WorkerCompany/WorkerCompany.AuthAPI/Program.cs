@@ -21,6 +21,7 @@ namespace WorkerCompany.AuthAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .ConfigureLogging(logging => logging.AddConsole());
     }
 }

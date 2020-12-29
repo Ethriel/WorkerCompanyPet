@@ -58,11 +58,21 @@ namespace WorkerCompany.DAL.Models
                 entity.HasOne(d => d.Company)
                       .WithMany(p => p.Workers)
                       .HasForeignKey(d => d.CompanyId)
-                      .HasConstraintName("FK__Worker__CompanyI__276EDEB3");
+                      .HasConstraintName("FK__Worker__CompanyI__276EDEB3")
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(w => w.AppUser)
                       .WithOne(au => au.Worker)
-                      .HasForeignKey<AppUser>(au => au.WorkerId);
+                      .HasForeignKey<AppUser>(au => au.WorkerId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.HasOne(au => au.Worker)
+                      .WithOne(w => w.AppUser)
+                      .HasForeignKey<Worker>(w => w.AppUserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<WorkerCopy>(entity =>
@@ -83,7 +93,8 @@ namespace WorkerCompany.DAL.Models
                 entity.HasOne(d => d.Company)
                       .WithMany(p => p.WorkerCopies)
                       .HasForeignKey(d => d.CompanyId)
-                      .HasConstraintName("FK__WorkerCop__Compa__5DCAEF64");
+                      .HasConstraintName("FK__WorkerCop__Compa__5DCAEF64")
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             base.OnModelCreating(modelBuilder);

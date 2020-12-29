@@ -35,8 +35,10 @@ namespace WorkerCompany.Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             var secret = Configuration["JwtSecret"];
+            var issuer = Configuration["JwtIssuer"];
+            var audience = Configuration["JwtAudience"];
 
-            services = ConfigureJwt.Configure(services, secret);
+            services = ConfigureJwt.Configure(services, secret, issuer, audience);
 
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());

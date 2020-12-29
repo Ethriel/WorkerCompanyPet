@@ -12,6 +12,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.DAL.Models;
+using Newtonsoft.Json;
+using WorkerCompany.Authentication.Services.Abstraction;
+using WorkerCompany.Authentication.Services.Implementation;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WorkerCompany.AuthAPI.Extensions;
 
 namespace WorkerCompany.AuthAPI
 {
@@ -29,15 +36,21 @@ namespace WorkerCompany.AuthAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersService();
+
+            services.AddMvc();
+
+            services.AddDbContextService(Configuration);
+
+            services.AddIdentityService();
+
             var secret = Configuration["JwtSecret"];
-            services = ConfigureJwt.Configure(services, secret);
+            var issuer = Configuration["JwtIssuer"];
+            var audience = Configuration["JwtAudience"];
 
-            services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services = ConfigureJwt.Configure(services, secret, issuer, audience);
 
-            services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<WorkerCompanyPetContext>()
-                    .AddRoles<IdentityRole>()
-                    .AddDefaultTokenProviders();
+            services.AddCustomServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,15 +68,11 @@ namespace WorkerCompany.AuthAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Auth API");
-                });
+                endpoints.MapControllers();
             });
 
-            var authSeeder = new AuthSeeder(app.ApplicationServices);
-            authSeeder.CreateRoles().Wait();
-            authSeeder.CreateUsers().Wait();
+            //var authSeeder = new AuthSeeder(app.ApplicationServices);
+            //authSeeder.CreateAll();
         }
     }
 }

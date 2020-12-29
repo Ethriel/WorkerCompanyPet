@@ -10,9 +10,9 @@ values
 go
 insert into Worker([Name], DOB, CompanyId)
 values
-('Worker 1', '1990-10-10', 1),
-('Worker 2', '1992-11-12', 1),
-('Worker 3', '1993-12-13', 1),
+('Admin Worker 1', '1990-10-10', 1),
+('Test Worker 2', '1992-11-12', 1),
+('Test Manager 3', '1993-12-13', 1),
 ('Worker 4', '1994-01-14', 2),
 ('Worker 5', '1995-02-15', 2),
 ('Worker 6', '2000-03-16', 2),
