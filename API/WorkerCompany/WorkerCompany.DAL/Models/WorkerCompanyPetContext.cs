@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using WorkerCompany.Authentication.Models;
 using WorkerCompany.DAL.Helpers;
 
 namespace WorkerCompany.DAL.Models
 {
-    public partial class WorkerCompanyPetContext : DbContext
+    public partial class WorkerCompanyPetContext : IdentityDbContext<AppUser, IdentityRole, string>
     {
         public WorkerCompanyPetContext()
         {
@@ -49,9 +52,9 @@ namespace WorkerCompany.DAL.Models
                       .IsRequired()
                       .HasMaxLength(75);
 
-                //entity.Property(e => e.TimeUpdated)
-                //      .HasColumnType("datetime")
-                //      .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.TimeUpdated)
+                      .HasColumnType("datetime")
+                      .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Company)
                       .WithMany(p => p.Workers)
@@ -70,9 +73,9 @@ namespace WorkerCompany.DAL.Models
                       .IsRequired()
                       .HasMaxLength(75);
 
-                //entity.Property(e => e.TimeUpdated)
-                //      .HasColumnType("datetime")
-                //      .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.TimeUpdated)
+                      .HasColumnType("datetime")
+                      .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Company)
                       .WithMany(p => p.WorkerCopies)
