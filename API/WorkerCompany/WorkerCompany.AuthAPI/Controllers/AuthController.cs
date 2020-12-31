@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IdentityServer4;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkerCompany.AuthAPI.Extensions;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models.Auth;
 using WorkerCompany.Authentication.Services.Abstraction;
@@ -18,44 +22,37 @@ namespace WorkerCompany.AuthAPI.Controllers
     public class AuthController : Controller
     {
         private readonly WorkerCompanyPetContext context;
-        private readonly IGenerateJwt generateJwt;
+        private readonly IAuthService authService;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
 
-        public AuthController(WorkerCompanyPetContext context, IGenerateJwt generateJwt, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AuthController(WorkerCompanyPetContext context, IAuthService authService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             this.context = context;
-            this.generateJwt = generateJwt;
+            this.authService = authService;
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
         [AllowAnonymous]
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
+        public async Task<IActionResult> SignInAsync([FromBody] SignInModel signInModel)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = new List<string>();
-                foreach (var mse in ModelState.Values)
-                {
-                    foreach (var error in mse.Errors)
-                    {
-                        errors.Add(error.ErrorMessage);
-                    }
-                }
-                return BadRequest(errors);
-            }
-
-            var user = await userManager.FindByEmailAsync(signInModel.UserName);
-
-
-            var token = await generateJwt.CreateToken(user);
-
-            return Ok(new { token = token });
+            var authResponse = await authService.SignIn(signInModel, ModelState, HttpContext);
+            return this.GetResponseResult(authResponse);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [AllowAnonymous]
+        [HttpGet("sign-out")]
+        public async Task<IActionResult> SignOutAsync()
+        {
+            var localUser = User;
+
+            var authResponse = await authService.SignOut(HttpContext, User);
+            return this.GetResponseResult(authResponse);
+        }
+
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("secret")]
         public IActionResult Hello()
         {

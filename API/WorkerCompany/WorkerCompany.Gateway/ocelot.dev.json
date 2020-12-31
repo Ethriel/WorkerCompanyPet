@@ -35,10 +35,26 @@
       ],
       "UpstreamPathTemplate": "/sign-in",
       "UpstreamHttpMethod": [ "POST" ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "AuthAPI",
-      //  "AllowedScopes": []
-      //},
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "FileChacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/auth/sign-out",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "UpstreamPathTemplate": "/sign-out",
+      "UpstreamHttpMethod": [ "GET" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],
         "EnableRateLimiting": true,

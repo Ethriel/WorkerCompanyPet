@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4;
+using IdentityServer4.Events;
+using IdentityServer4.Extensions;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models.Auth;
@@ -19,15 +25,22 @@ namespace WorkerCompany.Authentication.Services.Implementation
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IGenerateJwt generateJwt;
+        private readonly IEventService events;
 
-        public AuthService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IGenerateJwt generateJwt)
+        public AuthService(
+            UserManager<AppUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<AppUser> signInManager,
+            IGenerateJwt generateJwt,
+            IEventService events)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
             this.generateJwt = generateJwt;
+            this.events = events;
         }
-        public async Task<AuthResponse> SignIn(SignInModel signInModel, ModelStateDictionary modelState)
+        public async Task<AuthResponse> SignIn(SignInModel signInModel, ModelStateDictionary modelState, HttpContext httpContext)
         {
             var response = default(AuthResponse);
             var errorMessage = "Sign in error";
@@ -56,6 +69,20 @@ namespace WorkerCompany.Authentication.Services.Implementation
                     }
                     else
                     {
+                        await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
+
+                        var authProps = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(30))
+                        };
+                        var issuer = new IdentityServerUser(user.Id)
+                        {
+                            DisplayName = user.DisplayName
+                        };
+
+                        await httpContext.SignInAsync(issuer, authProps);
+
                         var token = await generateJwt.CreateToken(user);
                         var authModel = await AuthModel.FromAppUser(user, userManager, token);
                         response = new AuthResponseOk(authModel, "Sign in success");
@@ -67,7 +94,7 @@ namespace WorkerCompany.Authentication.Services.Implementation
             return response;
         }
 
-        public async Task<AuthResponse> SignUp(SignUpModel signUpModel, ModelStateDictionary modelState)
+        public async Task<AuthResponse> SignUp(SignUpModel signUpModel, ModelStateDictionary modelState, HttpContext httpContext)
         {
             var response = default(AuthResponse);
             var errorMessage = "Sign up error";
@@ -113,9 +140,24 @@ namespace WorkerCompany.Authentication.Services.Implementation
             return response;
         }
 
-        public async Task<AuthResponse> SignOut()
+        public async Task<AuthResponse> SignOut(HttpContext httpContext, ClaimsPrincipal user)
         {
+            var userId = user.GetSubjectId();
+            var displayName = user.GetDisplayName();
+            if (httpContext.Request.Cookies.Any())
+            {
+                var cookies = httpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
+                foreach (var cookie in cookies)
+                {
+                    httpContext.Response.Cookies.Delete(cookie.Key);
+                }
+            }
+
+            await httpContext.SignOutAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme);
+
             await signInManager.SignOutAsync();
+            await events.RaiseAsync(new UserLogoutSuccessEvent(userId, displayName));
+
             var response = new AuthResponseOk("Sign out success");
 
             GC.Collect();
