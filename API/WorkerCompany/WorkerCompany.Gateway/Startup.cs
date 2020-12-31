@@ -57,7 +57,6 @@ namespace WorkerCompany.Gateway
 
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,7 +81,6 @@ namespace WorkerCompany.Gateway
                     await context.Response.WriteAsync("Gateway works");
                 });
             });
-
             //app.UseOcelot().Wait();
         }
     }

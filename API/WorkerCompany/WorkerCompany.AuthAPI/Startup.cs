@@ -19,6 +19,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WorkerCompany.AuthAPI.Extensions;
+using WorkerCompany.AuthAPI.Helpers;
 
 namespace WorkerCompany.AuthAPI
 {
@@ -42,13 +43,11 @@ namespace WorkerCompany.AuthAPI
 
             services.AddDbContextService(Configuration);
 
-            services.AddIdentityService();
+            services.AddAspNetCoreIdentityService();
 
-            var secret = Configuration["JwtSecret"];
-            var issuer = Configuration["JwtIssuer"];
-            var audience = Configuration["JwtAudience"];
+            services.AddIdentityServerService(Configuration);
 
-            services = ConfigureJwt.Configure(services, secret, issuer, audience);
+            services.AddAuthenticationService(Configuration);
 
             services.AddCustomServices();
         }
@@ -63,6 +62,8 @@ namespace WorkerCompany.AuthAPI
 
             app.UseRouting();
 
+            app.UseIdentityServer();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -71,6 +72,7 @@ namespace WorkerCompany.AuthAPI
                 endpoints.MapControllers();
             });
 
+            //InitializeIdentityContexts.Init(app.ApplicationServices);
             //var authSeeder = new AuthSeeder(app.ApplicationServices);
             //authSeeder.CreateAll();
         }
