@@ -8,7 +8,7 @@ namespace WorkerCompany.Authentication.AuthItems
 {
     public static class ConfigureJwt
     {
-        public static IServiceCollection Configure(IServiceCollection services, string secret, string issuer, string audience)
+        public static IServiceCollection Configure(IServiceCollection services, string secret, string issuer, string audience, string authProviderKey = "AuthAPI")
         {
             var key = Encoding.ASCII.GetBytes(secret);
             var symmetricKey = new SymmetricSecurityKey(key);
@@ -17,7 +17,7 @@ namespace WorkerCompany.Authentication.AuthItems
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            }).AddJwtBearer(authProviderKey, options =>
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;

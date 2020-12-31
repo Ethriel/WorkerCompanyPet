@@ -1,23 +1,13 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
-using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.Gateway
 {
@@ -34,26 +24,11 @@ namespace WorkerCompany.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<WorkerCompanyPetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-
-            //services.AddIdentity<AppUser, IdentityRole>()
-            //        .AddEntityFrameworkStores<WorkerCompanyPetContext>()
-            //        .AddRoles<IdentityRole>()
-            //        .AddDefaultTokenProviders();
-
             var secret = Configuration["JwtSecret"];
             var issuer = Configuration["JwtIssuer"];
             var audience = Configuration["JwtAudience"];
 
-            //services = ConfigureJwt.Configure(services, secret, issuer, audience);
-            var authProviderKey = "AuthAPI";
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(authProviderKey, options =>
-                    {
-                        options.Authority = issuer;
-                        options.Audience = issuer;
-                    });
+            services = ConfigureJwt.Configure(services, secret, issuer, audience);
 
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
@@ -72,6 +47,7 @@ namespace WorkerCompany.Gateway
             app.UseAuthentication()
                .UseOcelot()
                .Wait();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -81,7 +57,6 @@ namespace WorkerCompany.Gateway
                     await context.Response.WriteAsync("Gateway works");
                 });
             });
-            //app.UseOcelot().Wait();
         }
     }
 }
