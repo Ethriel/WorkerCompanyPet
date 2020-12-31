@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
-using WorkerCompany.Authentication.Models;
+using WorkerCompany.Authentication.Models.Auth;
 using WorkerCompany.Authentication.Services.Abstraction;
 using WorkerCompany.DAL.Models;
 
@@ -48,6 +48,7 @@ namespace WorkerCompany.AuthAPI.Controllers
             }
 
             var user = await userManager.FindByEmailAsync(signInModel.UserName);
+
 
             var token = await generateJwt.CreateToken(user);
 

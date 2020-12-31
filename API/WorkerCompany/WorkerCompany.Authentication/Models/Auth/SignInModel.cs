@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WorkerCompany.Authentication.Models
+namespace WorkerCompany.Authentication.Models.Auth
 {
     public class SignInModel
     {

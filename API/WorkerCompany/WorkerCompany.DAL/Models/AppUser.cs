@@ -7,5 +7,14 @@ namespace WorkerCompany.DAL.Models
         public string DisplayName { get; set; }
         public int? WorkerId { get; set; }
         public virtual Worker Worker { get; set; }
+        public AppUser()
+        {
+
+        }
+        public AppUser(string displayName, string userName, int? workerId) : base(userName)
+        {
+            DisplayName = displayName;
+            WorkerId = workerId;
+        }
     }
 }
