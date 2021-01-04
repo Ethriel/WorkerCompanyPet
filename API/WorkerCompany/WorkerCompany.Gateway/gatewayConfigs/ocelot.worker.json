@@ -1,0 +1,116 @@
+{
+  "Routes": [
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Workers/get-all",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/workers"
+    },
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Workers/get/{id}",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/workers/{id}"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Workers/delete/{id}",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/workers/delete/{id}"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Workers/update",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/workers/update"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Workers/add",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/workers/add"
+    }
+  ]
+}

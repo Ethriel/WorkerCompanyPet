@@ -1,0 +1,116 @@
+{
+  "Routes": [
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Companies/get-all",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/companies"
+    },
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Companies/get/{id}",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/companies/{id}"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Companies/delete/{id}",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/companies/delete/{id}"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Companies/update",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/companies/update"
+    },
+    {
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthAPI",
+        "AllowedScopes": []
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Companies/add",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "RatelimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamPathTemplate": "/companies/add"
+    }
+  ]
+}
