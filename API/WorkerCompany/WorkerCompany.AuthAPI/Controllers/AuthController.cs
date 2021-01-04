@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WorkerCompany.AuthAPI.Extensions;
-using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models.Auth;
 using WorkerCompany.Authentication.Services.Abstraction;
 
@@ -28,18 +27,19 @@ namespace WorkerCompany.AuthAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("sign-out")]
+        [HttpPost("sign-out")]
         public async Task<IActionResult> SignOutAsync([FromBody] SignOutModel signOutModel)
         {
             var authResponse = await authService.SignOut(signOutModel);
             return this.GetResponseResult(authResponse);
         }
 
-        [Authorize(Roles = Roles.Admin)]
-        [HttpGet("secret")]
-        public IActionResult Hello()
+        [AllowAnonymous]
+        [HttpPost("sign-up")]
+        public async Task<IActionResult> SignUp([FromBody] SignUpModel signUpModel)
         {
-            return Ok("Hello, authorized");
+            var authResponse = await authService.SignUp(signUpModel, ModelState);
+            return this.GetResponseResult(authResponse);
         }
     }
 }

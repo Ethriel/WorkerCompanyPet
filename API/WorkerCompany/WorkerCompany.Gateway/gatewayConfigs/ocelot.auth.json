@@ -1,30 +1,6 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/Workers/get-all",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5001
-        }
-      ],
-      "UpstreamPathTemplate": "/workers",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthAPI",
-        "AllowedScopes": []
-      },
-      "RatelimitOptions": {
-        "ClientWhiteList": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      },
-      "FileChacheOptions": { "TtlSeconds": 30 }
-    },
-    {
       "DownstreamPathTemplate": "/auth/sign-in",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -45,7 +21,7 @@
       "FileChacheOptions": { "TtlSeconds": 30 }
     },
     {
-      "DownstreamPathTemplate": "/auth/sign-out",
+      "DownstreamPathTemplate": "/auth/sign-up",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -53,8 +29,8 @@
           "Port": 5031
         }
       ],
-      "UpstreamPathTemplate": "/sign-out",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/sign-up",
+      "UpstreamHttpMethod": [ "POST" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],
         "EnableRateLimiting": true,
@@ -65,7 +41,7 @@
       "FileChacheOptions": { "TtlSeconds": 30 }
     },
     {
-      "DownstreamPathTemplate": "/auth/secret",
+      "DownstreamPathTemplate": "/auth/sign-out",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -73,12 +49,8 @@
           "Port": 5031
         }
       ],
-      "UpstreamPathTemplate": "/secret",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthAPI",
-        "AllowedScopes": []
-      },
+      "UpstreamPathTemplate": "/sign-out",
+      "UpstreamHttpMethod": [ "POST" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],
         "EnableRateLimiting": true,
@@ -88,8 +60,5 @@
       },
       "FileChacheOptions": { "TtlSeconds": 30 }
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5021"
-  }
+  ]
 }

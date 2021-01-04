@@ -1,10 +1,7 @@
-﻿using IdentityServer4;
-using IdentityServer4.Events;
+﻿using IdentityServer4.Events;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,7 +45,7 @@ namespace WorkerCompany.Authentication.Services.Implementation
                 var user = await userManager.FindByEmailAsync(signInModel.UserName);
                 var errors = default(IEnumerable<string>);
 
-                if (user.Equals(null))
+                if (user == null)
                 {
                     errors = GetErrorsFromParams($"User {signInModel.UserName} was not found");
                     response = AuthResponseError.GetNotFoundError(errors, errorMessage);
@@ -88,7 +85,7 @@ namespace WorkerCompany.Authentication.Services.Implementation
             {
                 var user = await userManager.FindByEmailAsync(signUpModel.UserName);
 
-                if (!user.Equals(null))
+                if (user != null)
                 {
                     var errors = GetErrorsFromParams($"User {signUpModel.UserName} already exists");
                     response = AuthResponseError.GetBadRequestError(errors, errorMessage);
@@ -108,7 +105,7 @@ namespace WorkerCompany.Authentication.Services.Implementation
             var userId = signOutModel.Id;
             var user = await userManager.FindByIdAsync(userId);
 
-            if (user.Equals(null))
+            if (user == null)
             {
                 var errors = GetErrorsFromParams("User was not found");
                 response = AuthResponseError.GetNotFoundError(errors, "Sign out has failed");

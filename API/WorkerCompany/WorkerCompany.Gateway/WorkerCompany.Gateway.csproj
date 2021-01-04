@@ -23,4 +23,6 @@
     <ProjectReference Include="..\WorkerCompany.DAL\WorkerCompany.DAL.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>
