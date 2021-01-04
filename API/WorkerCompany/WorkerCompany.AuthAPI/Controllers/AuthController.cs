@@ -1,19 +1,10 @@
-﻿using IdentityServer4;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.AuthAPI.Extensions;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models.Auth;
 using WorkerCompany.Authentication.Services.Abstraction;
-using WorkerCompany.DAL.Models;
 
 namespace WorkerCompany.AuthAPI.Controllers
 {
@@ -21,38 +12,30 @@ namespace WorkerCompany.AuthAPI.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly WorkerCompanyPetContext context;
         private readonly IAuthService authService;
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
 
-        public AuthController(WorkerCompanyPetContext context, IAuthService authService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AuthController(IAuthService authService)
         {
-            this.context = context;
             this.authService = authService;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
         }
 
         [AllowAnonymous]
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignInAsync([FromBody] SignInModel signInModel)
         {
-            var authResponse = await authService.SignIn(signInModel, ModelState, HttpContext);
+            var authResponse = await authService.SignIn(signInModel, ModelState);
             return this.GetResponseResult(authResponse);
         }
 
         [AllowAnonymous]
         [HttpGet("sign-out")]
-        public async Task<IActionResult> SignOutAsync()
+        public async Task<IActionResult> SignOutAsync([FromBody] SignOutModel signOutModel)
         {
-            var localUser = User;
-
-            var authResponse = await authService.SignOut(HttpContext, User);
+            var authResponse = await authService.SignOut(signOutModel);
             return this.GetResponseResult(authResponse);
         }
 
-        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet("secret")]
         public IActionResult Hello()
         {
