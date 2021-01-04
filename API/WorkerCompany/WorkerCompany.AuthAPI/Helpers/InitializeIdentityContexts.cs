@@ -21,32 +21,33 @@ namespace WorkerCompany.AuthAPI.Helpers
 
                 //scopeServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
-                if (!context.Clients.Any())
+                foreach (var client in IdentityServerConfig.Clients)
                 {
-                    foreach (var client in IdentityServerConfig.Clients)
+                    if (!context.Clients.Any(c => c.ClientId == client.ClientId))
                     {
                         context.Clients.Add(client.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
 
-                if (!context.IdentityResources.Any())
+                foreach (var resource in IdentityServerConfig.IdentityResources)
                 {
-                    foreach (var resource in IdentityServerConfig.IdentityResources)
+                    if (!context.IdentityResources.Any(r => r.Name == resource.Name))
                     {
                         context.IdentityResources.Add(resource.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
 
-                if (!context.ApiScopes.Any())
+                foreach (var apiScope in IdentityServerConfig.ApiScopes)
                 {
-                    foreach (var resource in IdentityServerConfig.ApiScopes)
+                    if (!context.ApiScopes.Any(asc => asc.Name == apiScope.Name))
                     {
-                        context.ApiScopes.Add(resource.ToEntity());
+                        context.ApiScopes.Add(apiScope.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
+
                 //if (!context.ApiResources.Any())
                 //{
                 //    foreach (var resource in Config.ApiScopes)

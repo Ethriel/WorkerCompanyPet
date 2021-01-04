@@ -132,7 +132,7 @@ namespace WorkerCompany.Authentication.Services.Implementation
             }
             else
             {
-                result = await userManager.AddToRoleAsync(user, Roles.User);
+                result = await userManager.AddToRoleAsync(user, AuthRoles.User);
                 if (!result.Succeeded)
                 {
                     response = AuthResponseError.FromIdentityErrors(result.Errors, errorMessage);

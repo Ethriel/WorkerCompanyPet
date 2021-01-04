@@ -14,14 +14,14 @@ namespace WorkerCompany.AuthAPI.Helpers.Create
             return new ApiScope(name, displayName);
         }
 
-        public static Client CreateClient(string clientId, string clientName, string redirectUris, string postLogoutRedirectUris)
+        public static Client CreateClient(string clientId, string clientName, string clientUri)
         {
             return new Client
             {
                 ClientId = clientId,
                 ClientName = clientName,
-                RedirectUris = { redirectUris },
-                PostLogoutRedirectUris = { postLogoutRedirectUris },
+                RedirectUris = { $"{clientUri}/signin-oidc" },
+                PostLogoutRedirectUris = { $"{clientUri}/signout-callback-oidc" },
                 ClientSecrets = { new Secret(SecretSha256) },
                 AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                 RequireConsent = false,

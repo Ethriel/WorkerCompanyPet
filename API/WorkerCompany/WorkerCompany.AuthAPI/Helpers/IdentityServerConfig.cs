@@ -23,7 +23,8 @@ namespace WorkerCompany.AuthAPI.Helpers
         public static IEnumerable<Client> Clients => new List<Client>
         {
             CreateIdentityItems.CreateDefaultClient(),
-            CreateIdentityItems.CreatePostManClient()
+            CreateIdentityItems.CreatePostManClient(),
+            CreateIdentityItems.CreateClient("main-api", "Main API", "https://localhost:5001")
         };
 
         public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>

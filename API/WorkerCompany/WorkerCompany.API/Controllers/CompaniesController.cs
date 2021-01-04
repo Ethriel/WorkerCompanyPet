@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using WorkerCompany.API.Extensions;
+using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.BLL.DTO;
 using WorkerCompany.BLL.Services.Abstraction;
 using WorkerCompany.DAL.Models;
@@ -35,6 +37,7 @@ namespace WorkerCompany.API.Controllers
             return this.GetActionResult(apiResponse, logger);
         }
 
+        [Authorize(Roles = AuthRoles.AdminManager)]
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
@@ -42,6 +45,7 @@ namespace WorkerCompany.API.Controllers
             return this.GetActionResult(apiResponse, logger);
         }
 
+        [Authorize(Roles = AuthRoles.AdminManager)]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateAsync([FromBody] CompanyDTO company)
         {
@@ -49,6 +53,7 @@ namespace WorkerCompany.API.Controllers
             return this.GetActionResult(apiResponse, logger);
         }
 
+        [Authorize(Roles = AuthRoles.AdminManager)]
         [HttpPost("add")]
         public async Task<IActionResult> AddAsync([FromBody] CompanyDTO company)
         {

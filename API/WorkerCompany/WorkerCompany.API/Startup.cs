@@ -1,20 +1,21 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using WorkerCompany.API.Extensions;
+using WorkerCompany.Authentication.AuthItems;
 
 namespace WorkerCompany.API
 {
@@ -36,7 +37,46 @@ namespace WorkerCompany.API
 
             services.AddServices(Configuration);
 
-            
+            var secret = Configuration["JwtSecret"];
+            var issuer = Configuration["JwtIssuer"];
+            var audience = Configuration["JwtAudience"];
+            var authProviderKey = "AuthAPI";
+
+            var key = Encoding.ASCII.GetBytes(secret);
+            var symmetricKey = new SymmetricSecurityKey(key);
+
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication(options =>
+            {
+                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            }).AddCookie("Cookies")
+              .AddOpenIdConnect("oidc", options =>
+              {
+                  options.SignInScheme = "Cookies";
+                  options.Authority = issuer;
+
+                  options.ClientId = "main-api";
+                  options.ClientSecret = "B5DD15DC-0B6F-4648-99B5-EC43CCD34923";
+                  options.UsePkce = false;
+                  options.ResponseType = "code id_token";
+
+                  options.SaveTokens = true;
+                  options.GetClaimsFromUserInfoEndpoint = true;
+
+                  options.Scope.Add("api1");
+                  options.Scope.Add("offline_access");
+                  options.ClaimActions.MapJsonKey("website", "website");
+                  options.ClaimActions.MapJsonKey(ClaimTypes.Role, ClaimTypes.Role);
+              });
+
+            services.AddAuthorization();
+
+            //services = ConfigureJwt.Configure(services, secret, issuer, audience);
 
             services.AddSwaggerGen(swagger =>
             {
@@ -70,6 +110,8 @@ namespace WorkerCompany.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -80,7 +122,7 @@ namespace WorkerCompany.API
                 (
                     name: "default",
                     pattern: ""
-                ); 
+                );
                 endpoints.MapControllers();
             });
 

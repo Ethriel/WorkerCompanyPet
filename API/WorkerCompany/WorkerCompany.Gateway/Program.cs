@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WorkerCompany.Gateway
 {
@@ -22,14 +17,11 @@ namespace WorkerCompany.Gateway
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    //var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                    var env = "dev";
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.ConfigureAppConfiguration((hostingContext, config) => 
+                    webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
                     {
                         var directory = Directory.GetCurrentDirectory();
                         var folder = Path.Combine(directory, "gatewayConfigs");
-                        //config.AddJsonFile($"ocelot.{env}.json");
                         config.AddOcelot(folder, hostingContext.HostingEnvironment);
                     });
                 })

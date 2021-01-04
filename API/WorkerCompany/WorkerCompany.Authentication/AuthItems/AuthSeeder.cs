@@ -47,16 +47,16 @@ namespace WorkerCompany.Authentication.AuthItems
 
         public void CreateRoles()
         {
-            CreateRole(Roles.Admin);
-            CreateRole(Roles.User);
-            CreateRole(Roles.Manager);
+            CreateRole(AuthRoles.Admin);
+            CreateRole(AuthRoles.User);
+            CreateRole(AuthRoles.Manager);
         }
 
         public void CreateUsers()
         {
-            CreateUser("App admin", "admin@gmail.com", "Qwerty-1", Roles.Admin, 1);
-            CreateUser("App test user", "testuser@gmail.com", "Qwerty-1", Roles.User, 2);
-            CreateUser("App test manager", "testmanager@gmail.com", "Qwerty-1", Roles.Manager, 3);
+            CreateUser("App admin", "admin@gmail.com", "Qwerty-1", AuthRoles.Admin, 1);
+            CreateUser("App test user", "testuser@gmail.com", "Qwerty-1", AuthRoles.User, 2);
+            CreateUser("App test manager", "testmanager@gmail.com", "Qwerty-1", AuthRoles.Manager, 3);
         }
 
         private void CreateRole(string name)
