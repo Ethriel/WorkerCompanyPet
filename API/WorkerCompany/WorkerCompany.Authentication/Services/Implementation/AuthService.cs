@@ -1,6 +1,4 @@
-﻿using IdentityServer4.Events;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +16,15 @@ namespace WorkerCompany.Authentication.Services.Implementation
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IGenerateJwt generateJwt;
-        //private readonly IEventService events;
 
         public AuthService(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            IGenerateJwt generateJwt
-            //IEventService events
-            )
+            IGenerateJwt generateJwt)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.generateJwt = generateJwt;
-            //this.events = events;
         }
         public async Task<AuthResponse> SignIn(SignInModel signInModel, ModelStateDictionary modelState)
         {
@@ -61,8 +55,6 @@ namespace WorkerCompany.Authentication.Services.Implementation
                     }
                     else
                     {
-                        //await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
-
                         var token = await generateJwt.CreateToken(user);
                         var authModel = await AuthModel.FromAppUser(user, userManager, token);
                         response = new AuthResponseOk(authModel, "Sign in success");
@@ -114,7 +106,6 @@ namespace WorkerCompany.Authentication.Services.Implementation
             else
             {
                 await signInManager.SignOutAsync();
-                //await events.RaiseAsync(new UserLogoutSuccessEvent(userId, user.DisplayName));
                 response = new AuthResponseOk("Sign out success");
             }
 

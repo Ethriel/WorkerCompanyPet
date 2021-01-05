@@ -1,5 +1,4 @@
-﻿using IdentityModel;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -28,15 +27,9 @@ namespace WorkerCompany.Authentication.Services.Implementation
         }
         public async Task<string> CreateToken(AppUser user)
         {
-            var now = DateTime.Now;
-            var totalSeconds = now.Hour * 60 * 60 + now.Minute * 60 + now.Second;
-            var authTime = totalSeconds.ToString();
             var claims = new List<Claim>()
             {
-                new Claim(JwtClaimTypes.Subject, user.Id),
-                new Claim(JwtClaimTypes.IdentityProvider, "local"),
-                new Claim(JwtClaimTypes.AuthenticationMethod, "pwd"),
-                new Claim(JwtClaimTypes.AuthenticationTime, authTime),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
@@ -51,17 +44,6 @@ namespace WorkerCompany.Authentication.Services.Implementation
             var issuer = configuration["JwtIssuer"];
 
             var audience = configuration["JwtAudience"];
-
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(claims),
-            //    Expires = DateTime.Now.AddDays(7),
-            //    SigningCredentials = credentials,
-            //    Issuer = issuer,
-            //    Audience = audience
-            //};
-
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
 
             var token = new JwtSecurityToken(issuer: issuer, audience: audience, claims: claims, expires: DateTime.Now.AddDays(7), signingCredentials: credentials);
             var tokenString = tokenHandler.WriteToken(token);

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WorkerCompany.AuthAPI.Extensions;
-using WorkerCompany.AuthAPI.Helpers;
 
 namespace WorkerCompany.AuthAPI
 {
@@ -30,8 +29,6 @@ namespace WorkerCompany.AuthAPI
 
             services.AddAspNetCoreIdentityService();
 
-            //services.AddIdentityServerService(Configuration);
-
             services.AddAuthenticationService(Configuration);
 
             services.AddCustomServices();
@@ -47,8 +44,6 @@ namespace WorkerCompany.AuthAPI
 
             app.UseRouting();
 
-            //app.UseIdentityServer();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -57,7 +52,6 @@ namespace WorkerCompany.AuthAPI
                 endpoints.MapControllers();
             });
 
-            //InitializeIdentityContexts.Init(app.ApplicationServices);
             //var authSeeder = new AuthSeeder(app.ApplicationServices);
             //authSeeder.CreateAll();
         }
