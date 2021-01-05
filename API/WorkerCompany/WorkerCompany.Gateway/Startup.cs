@@ -26,6 +26,14 @@ namespace WorkerCompany.Gateway
         {
             services = ConfigureJwt.Configure(services, Configuration);
 
+            services.AddCors(cors =>
+            {
+                cors.AddPolicy("CorsPolicy", builder => builder.WithOrigins(Configuration["ClientApp"])
+                                                               .AllowAnyMethod()
+                                                               .AllowAnyHeader()
+                                                               .AllowCredentials());
+            });
+
             services.AddOcelot()
                     .AddCacheManager(settings => settings.WithDictionaryHandle());
         }
@@ -37,6 +45,8 @@ namespace WorkerCompany.Gateway
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 

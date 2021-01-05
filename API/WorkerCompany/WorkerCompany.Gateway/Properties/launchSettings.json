@@ -17,7 +17,7 @@
     },
     "WorkerCompany.Gateway": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "dev"
       },
