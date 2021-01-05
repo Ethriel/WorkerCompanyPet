@@ -42,7 +42,7 @@
     },
     {
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthAPI",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
       "DownstreamHostAndPorts": [
@@ -66,7 +66,7 @@
     },
     {
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthAPI",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
       "DownstreamHostAndPorts": [
@@ -90,7 +90,7 @@
     },
     {
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "AuthAPI",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
       "DownstreamHostAndPorts": [

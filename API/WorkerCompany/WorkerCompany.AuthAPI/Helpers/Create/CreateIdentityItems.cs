@@ -5,7 +5,7 @@ namespace WorkerCompany.AuthAPI.Helpers.Create
 {
     public static class CreateIdentityItems
     {
-        public const string ApiScope = "api1";
+        public const string ApiScope = "api";
         public const string RolesScope = "roles";
         public static string SecretSha256 { get => "B5DD15DC-0B6F-4648-99B5-EC43CCD34923".Sha256(); }
 
@@ -42,7 +42,7 @@ namespace WorkerCompany.AuthAPI.Helpers.Create
             return new Client
             {
                 ClientId = "client",
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                 ClientSecrets = { new Secret(SecretSha256) },
                 AllowedScopes = { ApiScope }
             };
@@ -55,13 +55,14 @@ namespace WorkerCompany.AuthAPI.Helpers.Create
                 ClientId = "postman",
                 RequirePkce = true,
                 Enabled = true,
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                 ClientSecrets = { new Secret(SecretSha256)},
                 AllowedScopes =
                 {
                     ApiScope,
                     IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
+                    IdentityServerConstants.StandardScopes.Profile,
+                    RolesScope
                 }
             };
         }

@@ -30,7 +30,7 @@ namespace WorkerCompany.AuthAPI
 
             services.AddAspNetCoreIdentityService();
 
-            services.AddIdentityServerService(Configuration);
+            //services.AddIdentityServerService(Configuration);
 
             services.AddAuthenticationService(Configuration);
 
@@ -47,7 +47,7 @@ namespace WorkerCompany.AuthAPI
 
             app.UseRouting();
 
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -57,7 +57,7 @@ namespace WorkerCompany.AuthAPI
                 endpoints.MapControllers();
             });
 
-            InitializeIdentityContexts.Init(app.ApplicationServices);
+            //InitializeIdentityContexts.Init(app.ApplicationServices);
             //var authSeeder = new AuthSeeder(app.ApplicationServices);
             //authSeeder.CreateAll();
         }

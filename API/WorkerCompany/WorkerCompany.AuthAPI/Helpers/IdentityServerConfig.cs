@@ -17,7 +17,7 @@ namespace WorkerCompany.AuthAPI.Helpers
 
         public static IEnumerable<ApiScope> ApiScopes => new List<ApiScope>
         {
-            CreateIdentityItems.CreateApiScope("api1", "My API")
+            CreateIdentityItems.CreateApiScope("api", "Project API")
         };
 
         public static IEnumerable<Client> Clients => new List<Client>

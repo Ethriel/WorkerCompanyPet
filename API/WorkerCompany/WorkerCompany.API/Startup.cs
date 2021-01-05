@@ -37,46 +37,7 @@ namespace WorkerCompany.API
 
             services.AddServices(Configuration);
 
-            var secret = Configuration["JwtSecret"];
-            var issuer = Configuration["JwtIssuer"];
-            var audience = Configuration["JwtAudience"];
-            var authProviderKey = "AuthAPI";
-
-            var key = Encoding.ASCII.GetBytes(secret);
-            var symmetricKey = new SymmetricSecurityKey(key);
-
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
-            services.AddAuthentication(options =>
-            {
-                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            }).AddCookie("Cookies")
-              .AddOpenIdConnect("oidc", options =>
-              {
-                  options.SignInScheme = "Cookies";
-                  options.Authority = issuer;
-
-                  options.ClientId = "main-api";
-                  options.ClientSecret = "B5DD15DC-0B6F-4648-99B5-EC43CCD34923";
-                  options.UsePkce = false;
-                  options.ResponseType = "code id_token";
-
-                  options.SaveTokens = true;
-                  options.GetClaimsFromUserInfoEndpoint = true;
-
-                  options.Scope.Add("api1");
-                  options.Scope.Add("offline_access");
-                  options.ClaimActions.MapJsonKey("website", "website");
-                  options.ClaimActions.MapJsonKey(ClaimTypes.Role, ClaimTypes.Role);
-              });
-
-            services.AddAuthorization();
-
-            //services = ConfigureJwt.Configure(services, secret, issuer, audience);
+            services = ConfigureJwt.Configure(services, Configuration);
 
             services.AddSwaggerGen(swagger =>
             {
@@ -95,6 +56,8 @@ namespace WorkerCompany.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+
             app.UseExceptionHandler(a => a.Run(async context =>
             {
                 var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
@@ -109,8 +72,6 @@ namespace WorkerCompany.API
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
-
-            app.UseAuthentication();
 
             app.UseRouting();
 

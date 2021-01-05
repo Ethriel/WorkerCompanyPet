@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -27,8 +28,15 @@ namespace WorkerCompany.Authentication.Services.Implementation
         }
         public async Task<string> CreateToken(AppUser user)
         {
+            var now = DateTime.Now;
+            var totalSeconds = now.Hour * 60 * 60 + now.Minute * 60 + now.Second;
+            var authTime = totalSeconds.ToString();
             var claims = new List<Claim>()
             {
+                new Claim(JwtClaimTypes.Subject, user.Id),
+                new Claim(JwtClaimTypes.IdentityProvider, "local"),
+                new Claim(JwtClaimTypes.AuthenticationMethod, "pwd"),
+                new Claim(JwtClaimTypes.AuthenticationTime, authTime),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 

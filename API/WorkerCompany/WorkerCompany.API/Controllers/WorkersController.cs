@@ -37,7 +37,7 @@ namespace WorkerCompany.API.Controllers
             return this.GetActionResult(apiResponse, logger);
         }
 
-        [Authorize(Roles = AuthRoles.AdminManager)]
+        [Authorize(Roles = AuthRoles.Admin)]
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
