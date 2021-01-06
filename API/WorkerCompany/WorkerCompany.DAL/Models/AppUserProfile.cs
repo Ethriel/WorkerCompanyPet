@@ -21,5 +21,17 @@ namespace WorkerCompany.DAL.Models
         public DateTime DateOfBirth { get; set; }
         public string AppUserId { get; set; }
         public virtual AppUser AppUser { get; set; }
+        public AppUserProfile()
+        {
+
+        }
+        public AppUserProfile(string firstName, string lastName, bool marriageStatus, string gender, string dateOfBirth)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            MarriageStatus = marriageStatus;
+            Gender = gender;
+            DateOfBirth = DateTime.Parse(dateOfBirth);
+        }
     }
 }

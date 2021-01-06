@@ -9,7 +9,7 @@
           "Port": 5031
         }
       ],
-      "UpstreamPathTemplate": "/sign-in",
+      "UpstreamPathTemplate": "/auth/sign-in",
       "UpstreamHttpMethod": [ "POST" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],
@@ -29,7 +29,7 @@
           "Port": 5031
         }
       ],
-      "UpstreamPathTemplate": "/sign-up",
+      "UpstreamPathTemplate": "/auth/sign-up",
       "UpstreamHttpMethod": [ "POST" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],
@@ -49,7 +49,7 @@
           "Port": 5031
         }
       ],
-      "UpstreamPathTemplate": "/sign-out",
+      "UpstreamPathTemplate": "/auth/sign-out",
       "UpstreamHttpMethod": [ "POST" ],
       "RatelimitOptions": {
         "ClientWhiteList": [],

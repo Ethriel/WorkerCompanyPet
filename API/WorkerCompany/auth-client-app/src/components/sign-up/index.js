@@ -1,16 +1,23 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Form, Input, Button, DatePicker, Dropdown, Menu, Select } from 'antd';
-import PhoneInputMask from '../common/phone-input-mask';
+import { Form, Input, Button, DatePicker, Select } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Option } = Select;
 
 const SignUpForm = ({ submit, workers, ...props }) => {
     const [form] = Form.useForm();
 
-    const onPhoneChange = phone => {
-        return phone.replace(/\(|\)|\s|-/g, "");
+    const layout = {
+        labelCol: {
+            span: 8,
+        },
+        wrapperCol: {
+            span: 16,
+        },
     };
+
+    const labelAlign = 'left';
 
     const workersItems =
         <Select>
@@ -20,14 +27,14 @@ const SignUpForm = ({ submit, workers, ...props }) => {
         </Select>;
 
     const beforeSubmit = values => {
-        values.phone = onPhoneChange(values.phone);
         submit(values);
     };
 
     return (
         <div className="form-container center-container">
             <Form
-                layout="vertical"
+                // layout="horizontal"
+                {...layout}
                 form={form}
                 name="register"
                 onFinish={beforeSubmit}
@@ -37,7 +44,8 @@ const SignUpForm = ({ submit, workers, ...props }) => {
 
                 <Form.Item
                     label="First name"
-                    name={['user', 'name']}
+                    labelAlign={labelAlign}
+                    name='firstName'
                     className="ant-input-my-sign-up"
                     rules={
                         [
@@ -54,7 +62,8 @@ const SignUpForm = ({ submit, workers, ...props }) => {
 
                 <Form.Item
                     label="Last name"
-                    name={['user', 'lastname']}
+                    labelAlign={labelAlign}
+                    name='lastName'
                     className="ant-input-my-sign-up"
                     rules={
                         [
@@ -70,8 +79,27 @@ const SignUpForm = ({ submit, workers, ...props }) => {
                 </Form.Item>
 
                 <Form.Item
+                    label="Display name"
+                    labelAlign={labelAlign}
+                    name='displayName'
+                    className="ant-input-my-sign-up"
+                    rules={
+                        [
+                            {
+                                required: true,
+                                message: "Display name is required"
+                            }
+                        ]
+                    }>
+                    <Input placeholder="Display name"
+                        className="ant-input-my-sign-up"
+                    />
+                </Form.Item>
+
+                <Form.Item
                     label="Email"
-                    name="email"
+                    labelAlign={labelAlign}
+                    name="username"
                     className="ant-input-my-sign-up"
                     rules={[
                         {
@@ -90,21 +118,8 @@ const SignUpForm = ({ submit, workers, ...props }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Phone"
-                    name="phone"
-                    className="ant-input-my-sign-up"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your phone!'
-                        }
-                    ]}
-                >
-                    <PhoneInputMask className="ant-input ant-input-my-sign-up" />
-                </Form.Item>
-
-                <Form.Item
                     label="Password"
+                    labelAlign={labelAlign}
                     name="password"
                     className="ant-input-my-sign-up"
                     rules={[
@@ -122,6 +137,7 @@ const SignUpForm = ({ submit, workers, ...props }) => {
 
                 <Form.Item
                     label="Confirm"
+                    labelAlign={labelAlign}
                     name="confirm"
                     className="ant-input-my-sign-up"
                     dependencies={['password']}
@@ -148,7 +164,8 @@ const SignUpForm = ({ submit, workers, ...props }) => {
 
                 <Form.Item
                     label="Birthdate"
-                    name="birthdate"
+                    labelAlign={labelAlign}
+                    name="dateOfBirth"
                     rules={
                         [
                             {
@@ -166,7 +183,8 @@ const SignUpForm = ({ submit, workers, ...props }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Select woker"
+                    label="Select worker"
+                    labelAlign={labelAlign}
                     name="workerId"
                     rules={
                         [
@@ -180,13 +198,47 @@ const SignUpForm = ({ submit, workers, ...props }) => {
                 </Form.Item>
 
                 <Form.Item
+                    label="Marriage status"
+                    labelAlign={labelAlign}
+                    name="marriageStatus">
+                    <Select key={uuidv4()}>
+                        <Option key={uuidv4()} value="Married">Married</Option>
+                        <Option key={uuidv4()} value="Not married">Not married</Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    label="Gender"
+                    labelAlign={labelAlign}
+                    name="gender"
+                    rules={
+                        [
+                            {
+                                required: true,
+                                message: "Gender is required"
+                            }
+                        ]
+                    }>
+                    <Select key={uuidv4()}>
+                        <Option key={uuidv4()} value="Male">Male</Option>
+                        <Option key={uuidv4()} value="Female">Female</Option>
+                        <Option key={uuidv4()} value="Unspecified">Unspecified</Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    wrapperCol={{
+                        offset: 0,
+                        span: 24,
+                    }}
                 >
                     <Button
                         type="primary"
                         htmlType="submit"
                         size="large"
                         className="ant-btn-primary-my"
-                        style={{ width: '100%' }}
+                        block={true}
+                    // style={{ width: '100%' }}
                     >
                         Sign up
                     </Button>

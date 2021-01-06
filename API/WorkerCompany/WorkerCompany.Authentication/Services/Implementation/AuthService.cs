@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.Authentication.Models.Auth;
@@ -16,15 +18,17 @@ namespace WorkerCompany.Authentication.Services.Implementation
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IGenerateJwt generateJwt;
+        private readonly DbContext context;
 
         public AuthService(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            IGenerateJwt generateJwt)
+            IGenerateJwt generateJwt, DbContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.generateJwt = generateJwt;
+            this.context = context;
         }
         public async Task<AuthResponse> SignIn(SignInModel signInModel, ModelStateDictionary modelState)
         {
@@ -115,8 +119,14 @@ namespace WorkerCompany.Authentication.Services.Implementation
         private async Task<AuthResponse> TryCreateUser(SignUpModel signUpModel, string errorMessage)
         {
             var response = default(AuthResponse);
-            var user = new AppUser(signUpModel.DisplayName, signUpModel.UserName, signUpModel.WorkerId);
+
+            var appUserProfile = new AppUserProfile(signUpModel.FirstName, signUpModel.LastName, signUpModel.MarriageStatus, signUpModel.Gender, signUpModel.DateOfBirth);
+            var user = new AppUser(signUpModel.DisplayName, signUpModel.UserName, signUpModel.WorkerId, appUserProfile);
             var result = await userManager.CreateAsync(user, signUpModel.Password);
+
+            appUserProfile.AppUserId = user.Id;
+            context.Entry(appUserProfile).State = EntityState.Modified;
+            context.SaveChanges();
 
             if (!result.Succeeded)
             {

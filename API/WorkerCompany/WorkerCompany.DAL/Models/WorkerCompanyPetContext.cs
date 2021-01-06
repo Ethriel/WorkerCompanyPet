@@ -19,6 +19,7 @@ namespace WorkerCompany.DAL.Models
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Worker> Worker { get; set; }
         public virtual DbSet<WorkerCopy> WorkerCopy { get; set; }
+        public virtual DbSet<AppUserProfile> AppUserProfile { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -82,6 +83,8 @@ namespace WorkerCompany.DAL.Models
 
             modelBuilder.Entity<AppUserProfile>(entity =>
             {
+                entity.ToTable("AppUserProfile");
+
                 entity.HasOne(aup => aup.AppUser)
                       .WithOne(au => au.AppUserProfile)
                       .HasForeignKey<AppUser>(au => au.AppUserProfileId)

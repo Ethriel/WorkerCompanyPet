@@ -48,6 +48,7 @@ namespace WorkerCompany.AuthAPI.Extensions
         {
             services.AddScoped<IGenerateJwt, GenerateJwt>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<DbContext, WorkerCompanyPetContext>();
 
             return services;
         }

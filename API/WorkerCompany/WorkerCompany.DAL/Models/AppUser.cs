@@ -13,10 +13,17 @@ namespace WorkerCompany.DAL.Models
         {
 
         }
-        public AppUser(string displayName, string userName, int? workerId) : base(userName)
+        public AppUser(string displayName, string userName, int? workerId, int? appUserProfileId) : base(userName)
         {
             DisplayName = displayName;
             WorkerId = workerId;
+            AppUserProfileId = appUserProfileId;
+        }
+        public AppUser(string displayName, string userName, int? workerId, AppUserProfile appUserProfile) : base(userName)
+        {
+            DisplayName = displayName;
+            WorkerId = workerId;
+            AppUserProfile = appUserProfile;
         }
     }
 }

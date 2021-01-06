@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkerCompany.Authentication\WorkerCompany.Authentication.csproj" />
+    <ProjectReference Include="..\WorkerCompany.BLL\WorkerCompany.BLL.csproj" />
     <ProjectReference Include="..\WorkerCompany.DAL\WorkerCompany.DAL.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,1 @@
+export const WORKERS_DATA = "workers/data";
