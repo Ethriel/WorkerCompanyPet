@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WorkerCompany.BLL.Responses.ApiResponses;
 using WorkerCompany.BLL.Services.Abstraction;
@@ -49,6 +50,12 @@ namespace WorkerCompany.BLL.Services.Implementation
             }
 
             return response;
+        }
+
+        public async Task<IEnumerable<TEntity>> EntitiesAsEnumerableAsync()
+        {
+            return await entityService.ReadAll()
+                                      .ToArrayAsync();
         }
 
         public async Task<ApiResponse> GetByIdAsync(object id)

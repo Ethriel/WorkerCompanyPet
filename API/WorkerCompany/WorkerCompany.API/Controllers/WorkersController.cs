@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Threading.Tasks;
 using WorkerCompany.API.Extensions;
 using WorkerCompany.Authentication.AuthItems;
 using WorkerCompany.BLL.DTO;
+using WorkerCompany.BLL.Responses.ApiResponses;
 using WorkerCompany.BLL.Services.Abstraction;
 using WorkerCompany.DAL.Models;
 
@@ -28,6 +30,16 @@ namespace WorkerCompany.API.Controllers
         {
             var apiResponse = await workers.ReadAllAsync();
             return this.GetActionResult(apiResponse, logger);
+        }
+
+        [HttpGet("get-workers-data")]
+        public async Task<IActionResult> GetWorkersIds()
+        {
+            var allWorkers = await workers.EntitiesAsEnumerableAsync();
+            var data = allWorkers.Where(w => !w.Name.Contains(AuthRoles.Admin) && !w.Name.Contains(AuthRoles.Manager))
+                                 .Select(w => new { id = w.Id, name = w.Name });
+            var response = new ApiOkResponse("Returning workers data", new { workers = data });
+            return this.GetActionResult(response, logger);
         }
 
         [HttpGet("get/{id}")]

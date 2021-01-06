@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace WorkerCompany.BLL.Services.Abstraction
 {
-    public interface IGenericEntityService<T> where T : class
+    public interface IGenericEntityService<T>
+        where T : class
     {
         IQueryable<T> ReadAll();
         void Add(T entity);

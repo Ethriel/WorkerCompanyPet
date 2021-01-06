@@ -27,6 +27,19 @@
           "Port": 5001
         }
       ],
+      "DownstreamPathTemplate": "/api/Workers/get-workers-data",
+      "DownstreamScheme": "https",
+      "FileChacheOptions": { "TtlSeconds": 30 },
+      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamPathTemplate": "/workers/data"
+    },
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
       "DownstreamPathTemplate": "/api/Workers/get/{id}",
       "DownstreamScheme": "https",
       "FileChacheOptions": { "TtlSeconds": 30 },

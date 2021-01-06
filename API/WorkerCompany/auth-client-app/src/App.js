@@ -1,8 +1,9 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import { home, signIn, signUp } from './components/common/routes-directions';
+
 
 const { Header, Content, Footer } = Layout;
 
@@ -10,6 +11,11 @@ const HomePage = React.lazy(() => import('./components/home'));
 const Navbar = React.lazy(() => import('./components/navbar'));
 const Login = React.lazy(() => import('./components/sign-in/sign-in-component'));
 const SignUp = React.lazy(() => import('./components/sign-up/sign-up-component'));
+
+notification.config({
+  placement: 'topRight',
+  duration: 10
+});
 
 const App = () => {
   return (

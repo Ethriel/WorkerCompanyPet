@@ -1,14 +1,23 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, Dropdown, Menu, Select } from 'antd';
 import PhoneInputMask from '../common/phone-input-mask';
 
-const SignUpForm = ({ submit, ...props }) => {
+const { Option } = Select;
+
+const SignUpForm = ({ submit, workers, ...props }) => {
     const [form] = Form.useForm();
 
     const onPhoneChange = phone => {
         return phone.replace(/\(|\)|\s|-/g, "");
     };
+
+    const workersItems =
+        <Select>
+            {workers.map((w) => {
+                return <Option key={w.id} value={w.id}>{w.name}</Option>
+            })}
+        </Select>;
 
     const beforeSubmit = values => {
         values.phone = onPhoneChange(values.phone);
@@ -25,7 +34,7 @@ const SignUpForm = ({ submit, ...props }) => {
                 size="default"
                 scrollToFirstError
             >
-                
+
                 <Form.Item
                     label="First name"
                     name={['user', 'name']}
@@ -90,7 +99,7 @@ const SignUpForm = ({ submit, ...props }) => {
                             message: 'Please input your phone!'
                         }
                     ]}
-                    >
+                >
                     <PhoneInputMask className="ant-input ant-input-my-sign-up" />
                 </Form.Item>
 
@@ -136,6 +145,7 @@ const SignUpForm = ({ submit, ...props }) => {
                         className="ant-input-my-sign-up"
                     />
                 </Form.Item>
+
                 <Form.Item
                     label="Birthdate"
                     name="birthdate"
@@ -156,6 +166,20 @@ const SignUpForm = ({ submit, ...props }) => {
                 </Form.Item>
 
                 <Form.Item
+                    label="Select woker"
+                    name="workerId"
+                    rules={
+                        [
+                            {
+                                required: true,
+                                message: "Worker is required"
+                            }
+                        ]
+                    }>
+                    {workersItems}
+                </Form.Item>
+
+                <Form.Item
                 >
                     <Button
                         type="primary"
@@ -165,7 +189,7 @@ const SignUpForm = ({ submit, ...props }) => {
                         style={{ width: '100%' }}
                     >
                         Sign up
-        </Button>
+                    </Button>
                 </Form.Item>
             </Form>
         </div>

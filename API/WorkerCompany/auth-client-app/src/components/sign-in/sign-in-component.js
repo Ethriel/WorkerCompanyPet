@@ -4,13 +4,20 @@ import LoginForm from './index.js';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import MakeRequestAsyncBody from '../common/make-request-async-body';
+import NotificationError from '../common/notifications/notification-error';
+import NotificationOk from '../common/notifications/notification-ok';
 
 const SignInComponent = (props) => {
     const submit = async values => {
-        const signal = axios.CancelToken.source();
-        const response = await MakeRequestAsyncBody('sign-in', values, "POST", signal.token);
-        const authData = response.data.authData;
-        console.log(authData);
+        try {
+            const signal = axios.CancelToken.source();
+            const response = await MakeRequestAsyncBody('sign-in', values, "POST", signal.token);
+            const authData = response.data.authData;
+            NotificationOk(response.data.message);
+        } catch (error) {
+            NotificationError(error);
+        }
+
     };
 
     return (
