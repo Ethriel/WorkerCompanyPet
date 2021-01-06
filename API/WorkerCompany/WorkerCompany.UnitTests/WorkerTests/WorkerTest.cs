@@ -64,7 +64,6 @@ namespace WorkerCompany.UnitTests.WorkerTests
             var workerToAdd = new Worker
             {
                 Name = "Worker for unit test",
-                Dob = DateTime.Now,
                 CompanyId = 1
             };
 

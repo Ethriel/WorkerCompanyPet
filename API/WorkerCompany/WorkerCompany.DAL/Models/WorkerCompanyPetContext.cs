@@ -43,9 +43,9 @@ namespace WorkerCompany.DAL.Models
 
             modelBuilder.Entity<Worker>(entity =>
             {
-                entity.Property(e => e.Dob)
-                      .HasColumnName("DOB")
-                      .HasColumnType("datetime");
+                //entity.Property(e => e.Dob)
+                //      .HasColumnName("DOB")
+                //      .HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
                       .IsRequired()
@@ -72,6 +72,19 @@ namespace WorkerCompany.DAL.Models
                 entity.HasOne(au => au.Worker)
                       .WithOne(w => w.AppUser)
                       .HasForeignKey<Worker>(w => w.AppUserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(au => au.AppUserProfile)
+                      .WithOne(aup => aup.AppUser)
+                      .HasForeignKey<AppUserProfile>(aup => aup.AppUserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<AppUserProfile>(entity =>
+            {
+                entity.HasOne(aup => aup.AppUser)
+                      .WithOne(au => au.AppUserProfile)
+                      .HasForeignKey<AppUser>(au => au.AppUserProfileId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 

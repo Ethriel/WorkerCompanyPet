@@ -7,6 +7,8 @@ namespace WorkerCompany.DAL.Models
         public string DisplayName { get; set; }
         public int? WorkerId { get; set; }
         public virtual Worker Worker { get; set; }
+        public int? AppUserProfileId { get; set; }
+        public virtual AppUserProfile AppUserProfile { get; set; }
         public AppUser()
         {
 
