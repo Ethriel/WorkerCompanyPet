@@ -1,5 +1,4 @@
-﻿using Broker.TopicConsumer;
-using System;
+﻿using System;
 
 namespace Broker.ConsoleClient
 {
@@ -7,9 +6,11 @@ namespace Broker.ConsoleClient
     {
         static void Main(string[] args)
         {
-            using (var consumer = new Broker.TopicConsumer.TopicConsumer())
+            using (var consumer = new TopicConsumer.TopicConsumer())
             {
                 consumer.Consume("demo.*", "demo.queue.log", "demo.exchange");
+                Console.WriteLine("Consumer has started");
+                Console.ReadLine();
             }
         }
     }

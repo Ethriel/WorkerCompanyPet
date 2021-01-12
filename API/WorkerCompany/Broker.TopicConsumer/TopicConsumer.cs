@@ -34,8 +34,6 @@ namespace Broker.TopicConsumer
             consumer.Received += Recieved;
 
             channel.BasicConsume(queue, true, consumer);
-            Console.WriteLine("Consumer has started");
-            Console.ReadLine();
         }
 
         private void Recieved(object sender, BasicDeliverEventArgs e)
