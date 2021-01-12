@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Broker.TopicExchange;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,7 @@ namespace WorkerCompany.API.Extensions
             services.AddScoped(typeof(IGenericEntityService<>), typeof(GenericEntityService<>));
             services.AddScoped(typeof(IMapperService<,>), typeof(MapperService<,>));
             services.AddScoped(typeof(ICRUDService<,>), typeof(CRUDService<,>));
+            services.AddScoped(typeof(TopicExchange));
         }
     }
 }

@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Broker.TopicExchange;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WorkerCompany.API.Extensions;
 using WorkerCompany.Authentication.AuthItems;
@@ -18,11 +23,13 @@ namespace WorkerCompany.API.Controllers
     {
         private readonly ILogger<WorkersController> logger;
         private readonly ICRUDService<Worker, WorkerDTO> workers;
+        private readonly TopicExchange topicExchange;
 
-        public WorkersController(ILogger<WorkersController> logger, ICRUDService<Worker, WorkerDTO> workers)
+        public WorkersController(ILogger<WorkersController> logger, ICRUDService<Worker, WorkerDTO> workers, TopicExchange topicExchange)
         {
             this.logger = logger;
             this.workers = workers;
+            this.topicExchange = topicExchange;
         }
 
         [HttpGet("get-all")]
@@ -61,6 +68,10 @@ namespace WorkerCompany.API.Controllers
         [HttpPost("update")]
         public async Task<IActionResult> UpdateAsync([FromBody] WorkerDTO worker)
         {
+            using (topicExchange)
+            {
+                topicExchange.Publish("demo.publish", "demo.exchange", worker);
+            }
             var apiResponse = await workers.UpdateAsync(worker.Id, worker);
             return this.GetActionResult(apiResponse, logger);
         }
